@@ -234,19 +234,22 @@
             $(".tabs li.is-active").removeClass("is-active");
             $(this).addClass("is-active");
 
-        if($(this).text().trim() == "Current"){
-          $(".panel-block").show();
-      $(":checked").closest(".panel-block").hide();
-    }
-    else if($(this).text().trim() == "Completed"){
-      $(".panel-block").show();
-      $("input:not(:checked)").closest(".panel-block").hide();
-    }
-    else {
-      $(".panel-block").show();
-    }
+        switch($(this).text().trim()){
+          case "Current":
+              blockPanal();
+              $(":checked").closest(".panel-block").hide();
+              break;
+          case "Completed":
+              blockPanal();
+              $("input:not(:checked)").closest(".panel-block").hide();
+              break;
+          default:
+              blockPanal();
+        }
     });
-        
+    function blockPanal(){
+            $(".panel-block").show();
+    }
 
   </script>
 </body>

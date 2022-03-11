@@ -16,7 +16,7 @@ export async function Login(userId: string, password: string) {
         throw { message: "Password Incorrect" };
     }
     session.user = user;
-    router.push('/tasks');
+    router.push('/');
 }
 export function Logout() {
     session.user = null;

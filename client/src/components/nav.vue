@@ -9,9 +9,9 @@ const isOpen = ref(false);
 <template>
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-          <img src="https://randomuser.me/api/portraits/men/6.jpg" width="112" height="28" />
+      <!-- <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="../assets/logoWebSite.jpg" width="112" height="28" />
         </a>
         <a
           role="button"
@@ -25,7 +25,7 @@ const isOpen = ref(false);
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
-      </div>
+      </div> -->
       <div class="navbar-menu" :class="{ 'is-active': isOpen }">
         <div class="navbar-start">
           <router-link class="navbar-item" to="/">Home</router-link>
@@ -75,4 +75,5 @@ const isOpen = ref(false);
 </template>
 
 <style>
+
 </style>

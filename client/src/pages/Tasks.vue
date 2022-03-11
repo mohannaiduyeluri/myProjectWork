@@ -14,10 +14,11 @@ const assignedUser = ref(null as string | null | undefined);
 //let tasks: Array<string>;
 console.log(users.usersList);
 function addTask(){
-        const user = users.usersList.find(u => u.userId+"" == assignedTo.value);
+  console.log(assignedTo.value);
+        const user = users.usersList.find(u => u.id+"" == assignedTo.value);
         assignedUser.value = session.user?.userId
         console.log(assignedUser);
-        console.log(user)
+        console.log(user);
         user?.tasks.unshift({ 
           task: newTaskName.value,
           dueDate: dueDate.value,
@@ -140,7 +141,7 @@ function taskHandler( tab : string){
                
                         <td>{{ task.task }}</td>
                         <td>{{ task.dueDate }}</td>
-                        <td>{{session.user?.userId}}</td>
+                        <td>{{session.user?.name}}</td>
                         <td>{{task.assignedBy}}</td>
                         <td><a class="panel-block" :class="{ 'is-completed': currentTab != 'Completed' && task.isCompleted }"><input type="checkbox" v-model="task.isCompleted" /></a></td>
                   </tr>

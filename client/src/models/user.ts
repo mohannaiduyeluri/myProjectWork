@@ -17,8 +17,8 @@ export const usersList: User[] = [
         picture: 'https://randomuser.me/api/portraits/men/4.jpg',
         id: 1,
         tasks: [
-            {task : 'Create a login page',dueDate:'04/21/2022', isCompleted: true, assignedBy: "saske uchiha"},
-            {task : 'Create a Task List page',dueDate:'05/18/2022', isCompleted: false, assignedBy: "saske uchiha"},
+            {task : 'Create a login page',dueDate:'2022-04-21', isCompleted: true, assignedBy: "saske uchiha"},
+            {task : 'Create a Task List page',dueDate:'2022-05-18', isCompleted: false, assignedBy: "saske uchiha"},
         ]
     },
     {
@@ -29,8 +29,8 @@ export const usersList: User[] = [
         picture: 'https://randomuser.me/api/portraits/men/86.jpg',
         id: 2,
         tasks: [
-            {task : 'Integrate jQuery in the code',dueDate:'03/21/2022', isCompleted: false, assignedBy: "naruto uzumaki"},
-            {task : 'Integrate Bulma Layout',dueDate:'03/26/2022', isCompleted: false, assignedBy: "naruto uzumaki"}
+            {task : 'Integrate jQuery in the code',dueDate:'2022-03-21', isCompleted: false, assignedBy: "naruto uzumaki"},
+            {task : 'Integrate Bulma Layout',dueDate:'2022-03-26', isCompleted: false, assignedBy: "naruto uzumaki"}
         ]
     },
     {
@@ -41,7 +41,7 @@ export const usersList: User[] = [
         picture: 'https://randomuser.me/api/portraits/men/8.jpg',
         id: 3,
         tasks: [
-            {task : 'Use Vue JS as a client side program',dueDate:'04/05/2022', isCompleted: false, assignedBy: "saske uchiha"}
+            {task : 'Use Vue JS as a client side program',dueDate:'2022-04-05', isCompleted: false, assignedBy: "saske uchiha"}
         ]
     }
 ]

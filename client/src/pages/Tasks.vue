@@ -2,21 +2,20 @@
 import session from "../models/session";
 import { ref, reactive, onMounted } from 'vue';
 import * as users from "../models/user"
-
-let currentTab= ref('All');
-let newTaskName = ref('');
-let dueDate = ref('');
-let assignedTo = ref('');
-let userTaskArray = session.user?.tasks; 
-let allTasks = reactive(session.user != null?session.user.tasks:null);
-let tasks= reactive(session.user != null?session.user.tasks:null);
-let assignedUser: any;
+import { User } from "../models/user";
+const currentTab= ref('All');
+const newTaskName = ref('');
+const dueDate = ref('');
+const assignedTo = ref('');
+const userTaskArray = session.user?.tasks; 
+const allTasks = reactive(session.user != null?session.user.tasks:null);
+const tasks = ref(session.user != null?session.user.tasks:null);
+const assignedUser = ref(null as string | null | undefined);
 //let tasks: Array<string>;
 console.log(users.usersList);
-
-function addTask(this: any){
-        const user = users.usersList.find(u => u.id+"" == assignedTo.value);
-        assignedUser = session.user?.name;
+function addTask(){
+        const user = users.usersList.find(u => u.userId+"" == assignedTo.value);
+        assignedUser.value = session.user?.userId
         console.log(assignedUser);
         console.log(user)
         user?.tasks.unshift({ 
@@ -27,31 +26,24 @@ function addTask(this: any){
         })
         console.log(user)
         if(session.user?.id+"" == assignedTo.value ){
-            this.tasks = user?.tasks;
+            tasks.value = user?.tasks;
         }
-        
-      //   allTasks.unshift({
-      //     task: newTaskName.value,
-      //     dueDate: dueDate.value,
-      //     isCompleted: false
-      // });
-      //this.tasks = this.allTasks;
+        newTaskName.value = ''
+        dueDate.value = ''
+        assignedTo.value = ''       
 }
-
-function taskHandler(this: any, currentTab : any){
-  if (this.currentTab.includes('Current')) {
-            this.tasks = this.allTasks.filter((task: any) => !task.isCompleted);
+function taskHandler( tab : string){
+  currentTab.value = tab
+  if (currentTab.value.includes('Current')) {
+            tasks.value = allTasks.filter((task: any) => !task.isCompleted);
           }
-          else if (this.currentTab.includes('Completed')) {
-            this.tasks = this.allTasks.filter((task: any) => task.isCompleted);
+          else if (currentTab.value.includes('Completed')) {
+            tasks.value = allTasks.filter((task: any) => task.isCompleted);
           }
           else {
-            this.tasks = this.allTasks;
+            tasks.value = allTasks;
           }
 }
-
-
-
 </script>
 
 <template>
@@ -62,7 +54,7 @@ function taskHandler(this: any, currentTab : any){
           <div class="panel">
             <div class="tabs is-boxed">
               <ul>
-                <li :class='{ "is-active": currentTab == "Current" }' @click="currentTab = 'Current',taskHandler('Current')">
+                <li :class='{ "is-active": currentTab == "Current" }' @click="taskHandler('Current')">
                   <a>
                     <span class="icon ">
                       <i class="fas fa-clipboard-list" aria-hidden="true"></i>
@@ -70,7 +62,7 @@ function taskHandler(this: any, currentTab : any){
                     <span>Current</span>
                   </a>
                 </li>
-                <li :class='{ "is-active": currentTab == "Completed" }' @click="currentTab = 'Completed',taskHandler('Completed')">
+                <li :class='{ "is-active": currentTab == "Completed" }' @click="taskHandler('Completed')">
                   <a>
                     <span class="icon ">
                       <i class="fas fa-calendar-times" aria-hidden="true"></i>
@@ -78,7 +70,7 @@ function taskHandler(this: any, currentTab : any){
                     <span>Completed</span>
                   </a>
                 </li>
-                <li :class='{ "is-active": currentTab == "All" }' @click="currentTab = 'All',taskHandler('All')">
+                <li :class='{ "is-active": currentTab == "All" }' @click="taskHandler('All')">
                   <a>
                     <span class="icon ">
                       <i class="fas fa-calendar" aria-hidden="true"></i>
@@ -148,10 +140,11 @@ function taskHandler(this: any, currentTab : any){
                
                         <td>{{ task.task }}</td>
                         <td>{{ task.dueDate }}</td>
-                        <td>{{session.user?.name}}</td>
+                        <td>{{session.user?.userId}}</td>
                         <td>{{task.assignedBy}}</td>
                         <td><a class="panel-block" :class="{ 'is-completed': currentTab != 'Completed' && task.isCompleted }"><input type="checkbox" v-model="task.isCompleted" /></a></td>
                   </tr>
+
                 <!-- </a> -->
               </tbody>
                  </table>

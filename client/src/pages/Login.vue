@@ -15,10 +15,10 @@ function login() {
 		<form @submit.prevent="login">
 			<h1>Login Form</h1>
 			<div>
-				<input type="text" placeholder="Username" required="" id="username" v-model="userName"/>
+				<input type="text" placeholder="Username" v-model="userName"/>
 			</div>
 			<div>
-				<input type="password" placeholder="Password" required="" id="password" v-model="password"/>
+				<input type="password" placeholder="Password" v-model="password"/>
 			</div>
 			<div>
 				<input type="submit" value="Log in" />

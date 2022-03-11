@@ -10,8 +10,8 @@ const isOpen = ref(false);
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
-        <a class="navbar-item" href="#">
-          <img src="tree-736885__480.jpg" width="112" height="28" />
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="https://randomuser.me/api/portraits/men/6.jpg" width="112" height="28" />
         </a>
         <a
           role="button"

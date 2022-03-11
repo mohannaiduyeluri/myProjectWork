@@ -6,7 +6,7 @@
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Welcome {{session.user.name}}</h1>
+          <h1 class="title">Welcome User</h1>
           <h2 class="subtitle">
             Make sure you check out your tasks.
           </h2>

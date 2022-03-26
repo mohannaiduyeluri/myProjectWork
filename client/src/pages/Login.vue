@@ -37,7 +37,7 @@ const login = () => {
 
 	button {
 		color: white;
-		background-color: #3b4148;
+		background-color: #ea4c88;
 		border-color: grey;
 	}
 

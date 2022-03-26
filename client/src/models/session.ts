@@ -1,26 +1,16 @@
-import router from "../router";
-import * as users from "../models/user"
-import { reactive } from "vue";
+import { reactive } from 'vue';
 
-
-const session = reactive({
-    user: null as users.User | null,
-})
-
-export async function Login(userId: string, password: string) {
-    const user = users.usersList.find(u => u.userId === userId);
-    if (!user) {
-        throw { message: "Invalid User" };
-    }
-    if(user.password !== password) {
-        throw { message: "Password Incorrect" };
-    }
-    session.user = user;
-    router.push('/');
+export interface ISession {
+	isLoggedIn: boolean;
+	username: string | null;
 }
-export function Logout() {
-    session.user = null;
-    router.push('/login');
-}
-    
-export default session;
+
+export const session: ISession = reactive<ISession>({
+	isLoggedIn: false,
+	username: null,
+});
+
+export const endSession = () => {
+	session.isLoggedIn = false;
+	session.username = null;
+};

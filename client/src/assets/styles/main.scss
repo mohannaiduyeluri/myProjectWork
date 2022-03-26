@@ -1,9 +1,16 @@
-.navbar {
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,600,800');
 
-    .is-active {
-       border-color: #FFFFFF;
-       border-bottom-width: 3px;
-       border-bottom-style: solid;
-     }
-   }
-   
+* {
+	box-sizing: border-box;
+	font-family: 'Roboto';
+}
+
+body {
+	background: #606468;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: 'Roboto', sans-serif;
+	height: 100vh;
+}

@@ -58,11 +58,6 @@ const logout = () => {
 	router.push('/');
 };
 
-const randomUser = () => {
-	const n = Math.ceil(Math.random() * 10);
-	return `https://randomuser.me/api/portraits/men/${n}.jpg`
-}
-
 </script>
 
 <template>
@@ -103,7 +98,7 @@ const randomUser = () => {
 
 	<nav>
 		<div class="sessionContainer">
-			<img :src="randomUser()">
+			<img :src="users.filter(e => e.username === session.username)[0].avatar">
 			<p>{{ session.username }}</p>
 			<button @click="logout" class="button is-danger">Log Out</button>
 		</div>

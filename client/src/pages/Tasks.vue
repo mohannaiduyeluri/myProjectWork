@@ -297,11 +297,16 @@ h1 {
 	height: 40px;
 	font-weight: 700;
 	font-size: 20px;
-	color: rgb(46, 46, 46);
+	background-color: lightcoral;
+	color: white;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	&:hover {
+		color: rgb(46, 46, 46);
+	}
 }
 
 .tabs {
@@ -320,6 +325,15 @@ h1 {
 		font-size: 20px;
 		color: rgb(170, 170, 170);
 		cursor: pointer;
+		width: 100%;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&:hover {
+			background-color: rgb(211, 211, 211);
+		}
 	}
 
 	.active {

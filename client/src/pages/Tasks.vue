@@ -2,11 +2,14 @@
 import { ref } from 'vue';
 import { session } from '../models/session';
 import { ITask, tasks } from '../models/tasks';
+import router from '../router';
 
 const tabs = ["Assigned", "Created", "All"];
 const currentTab = ref(tabs[0]);
 
 const tabClass = (tab: string) => tab === currentTab.value ? 'tab active' : 'tab';
+
+if(!session.isLoggedIn) router.push('/');
 
 const getTasks = (e: ITask[], done: boolean): ITask[] => {
 	if(currentTab.value == tabs[0])
@@ -40,7 +43,7 @@ const getTasks = (e: ITask[], done: boolean): ITask[] => {
 		<div class="half">
 			<div class="heading">TODO</div>
 			<div class="taskList">
-				<div class="card task" v-for="task in getTasks(tasks, false)">
+				<div class="card task" v-for="task in getTasks(tasks, false)" :key="task.title">
 					<div class="title">{{task.title}}</div>
 					<div class="for">{{task.for}}</div>
 					<div class="date">{{task.date}} • {{task.by}}</div>
@@ -54,7 +57,7 @@ const getTasks = (e: ITask[], done: boolean): ITask[] => {
 		<div class="half">
 			<div class="heading">DONE</div>
 			<div class="taskList">
-				<div class="card task" v-for="task in getTasks(tasks, true)">
+				<div class="card task" v-for="task in getTasks(tasks, true)" :key="task.title">
 					<div class="title">{{task.title}}</div>
 					<div class="for">{{task.for}}</div>
 					<div class="date">{{task.date}} • {{task.by}}</div>

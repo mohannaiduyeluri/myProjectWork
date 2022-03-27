@@ -51,10 +51,17 @@ const addTask = () => {
 	modalState.value = false;
 }
 
+const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
+
 const logout = () => {
 	endSession();
 	router.push('/');
 };
+
+const randomUser = () => {
+	const n = Math.ceil(Math.random() * 10);
+	return `https://randomuser.me/api/portraits/men/${n}.jpg`
+}
 
 </script>
 
@@ -96,8 +103,9 @@ const logout = () => {
 
 	<nav>
 		<div class="sessionContainer">
+			<img :src="randomUser()">
 			<p>{{ session.username }}</p>
-			<button @click="logout" class="is-normal is-outlined">Log Out</button>
+			<button @click="logout" class="button is-danger">Log Out</button>
 		</div>
 	</nav>
 
@@ -107,12 +115,21 @@ const logout = () => {
 			<div class="taskList">
 				<div class="card task" v-for="task in getTasks(tasks, false)" :key="task.title">
 					<div class="title">{{task.title}}</div>
-					<div class="for">{{task.for}}</div>
-					<div class="date">{{task.date}} • {{task.by}}</div>
-					<div class="field">
-						<label>Done</label>
-						<input type="checkbox" v-model="task.done" />
+					<div class="data">
+						<div class="c">for</div>
+						<span>{{task.for}}</span>
 					</div>
+					<div class="data">
+						<div class="c">due</div>
+						<span>{{task.date}}</span>
+					</div>
+					<div class="data">
+						<div class="c">by</div>
+						<span>{{task.by}}</span>
+					</div>
+					<button :class="done(task)" @click="()=>task.done = true">
+						{{ task.done ? '✘' : '✔' }}
+					</button>
 				</div>
 			</div>
 		</div>
@@ -121,12 +138,21 @@ const logout = () => {
 			<div class="taskList">
 				<div class="card task" v-for="task in getTasks(tasks, true)" :key="task.title">
 					<div class="title">{{task.title}}</div>
-					<div class="for">{{task.for}}</div>
-					<div class="date">{{task.date}} • {{task.by}}</div>
-					<div class="field">
-						<label>Done</label>
-						<input type="checkbox" v-model="task.done" />
+					<div class="data">
+						<div class="c">for</div>
+						<span>{{task.for}}</span>
 					</div>
+					<div class="data">
+						<div class="c">due</div>
+						<span>{{task.date}}</span>
+					</div>
+					<div class="data">
+						<div class="c">by</div>
+						<span>{{task.by}}</span>
+					</div>
+					<button :class="done(task)" @click="()=>task.done = false">
+						{{ task.done ? '✘' : '✔' }}
+					</button>
 				</div>
 			</div>
 		</div>
@@ -150,9 +176,17 @@ nav {
 		right: 0;
 		margin: 20px;
 
+		img {
+			height: 48px;
+			width: 48px;
+			border-radius: 50%;
+		}
+
 		p {
 			font-weight: 600;
-			margin: 10px 20px;
+			margin: 0 20px;
+			display: flex;
+			align-items: center;
 		}
 
 		button {
@@ -242,38 +276,49 @@ nav {
 			align-items: center;
 
 			.task {
-				height: 40px;
 				width: 95%;
-				display: flex;
-				justify-content: space-between;
-				flex-direction: row;
-				align-items: center;
+				display: block;
 				margin-top: 10px;
+				padding-bottom: 20px;
 
 				.title {
-					margin: 0;
+					margin: 10px 0 0 10px;
 					font-size: 18px;
 					font-weight: 600;
 					padding: 10px;
 					width: 200px;
 				}
 
-				.date, .for {
+				.data {
+					margin: 10px 0 0 20px;
 					font-weight: 500;
 					color: rgb(167, 167, 167);
-					width: 200px;
 					text-align: center;
-				}
+					display: inline;
 
-				.field {
-					label {
-						font-weight: 500;
-					}
+						.c {
+							display: inline-block;
+						}
 
-					input {
-						margin-right: 20px;
+					span {
+						color: white;
+						font-size: 14px;
+						font-weight: 600;
+						border-radius: 10px;
+						background-color: #f14668;
+						padding: 0 10px 0 10px;
 						margin-left: 10px;
 					}
+				}
+
+				button {
+					position: absolute;
+					bottom: 20px;
+					right: 30px;
+					padding: 5px;
+					height: 2em;
+					font-weight: 600;
+					width: 40px;
 				}
 			}
 		}

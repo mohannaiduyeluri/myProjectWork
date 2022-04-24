@@ -50,7 +50,12 @@ const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button 
 </script>
 
 <template>
-	<div class="card add" @click="() => modalState = true">Add</div>
+	<button class="button add" @click="() => modalState = true">
+		<span class="icon is-small">
+			<i class="fa-solid fa-plus"></i>
+		</span>
+		<span>Add</span>
+	</button>
 	<div class="card tabs">
 		<div :class="tabClass(tab)" v-for="tab in tabs" @click="() => currentTab = tab">{{ tab }}</div>
 	</div>
@@ -235,15 +240,8 @@ const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button 
 	font-size: 20px;
 	background-color: lightcoral;
 	color: white;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
 	justify-content: center;
 	z-index: 2;
-
-	&:hover {
-		color: rgb(46, 46, 46);
-	}
 }
 
 .tabs {

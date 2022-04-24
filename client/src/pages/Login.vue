@@ -31,7 +31,12 @@ const login = () => {
 		<h1 class="title">To Do App</h1>
 		<input class="input" type="text" placeholder="Username" v-model="user" />
 		<input class="input" type="password" placeholder="Password" v-model="pass" />
-		<button class="button" @click="login">Log In</button>
+		<button class="button" @click="login">
+			<span class="icon is-small">
+				<i class="fa-solid fa-right-to-bracket"></i>
+			</span>
+			<span>Log In</span>
+		</button>
 		<p>{{lErr}}</p>
 	</div>
 </template>

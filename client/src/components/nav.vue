@@ -16,7 +16,12 @@ import router from '../router';
 		<div class="sessionContainer">
 			<img :src="users.filter(e => e.username === session.username)[0].avatar">
 			<p>{{ session.username }}</p>
-			<button @click="logout" class="button is-danger">Log Out</button>
+			<button @click="logout" class="button is-danger">
+				<span class="icon is-small">
+					<i class="fa-solid fa-right-from-bracket"></i>
+				</span>
+				<span>Log Out</span>
+			</button>
 		</div>
 	</nav>
 </template>

@@ -10,14 +10,17 @@ const lErr = ref<string>('');
 
 const login = () => {
 	lErr.value = ''
+
 	const valid = users.value.filter(u => u.username === user.value && u.password === pass.value).length > 0;
-	if (valid) {
-		session.username = user.value;
-		session.isLoggedIn = true;
-		router.push('/tasks');
-	}
-	else
+
+	if(!valid) {
 		lErr.value = "Invalid Credentials";
+		return;
+	}
+
+	session.username = user.value;
+	session.isLoggedIn = true;
+	router.push('/tasks');
 };
 
 </script>

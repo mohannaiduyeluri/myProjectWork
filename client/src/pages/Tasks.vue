@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { endSession, session } from '../models/session';
+import { session } from '../models/session';
 import { ITask, tasks } from '../models/tasks';
 import { users } from '../models/user';
+import NavBar from '../components/nav.vue';
 import router from '../router';
 
 const tabs = ["Assigned", "Created", "All"];
@@ -12,23 +13,16 @@ const tabClass = (tab: string) => tab === currentTab.value ? 'tab active' : 'tab
 
 if(!session.isLoggedIn) router.push('/');
 
-const getTasks = (e: ITask[], done: boolean): ITask[] => {
+const getTasks = (e: ITask[]): ITask[] => {
+	e = e.sort((a, b) => a.done ? 1: -1);
+
 	if(currentTab.value == tabs[0])
-		if(done)
-			return e.filter(t => t.for === session.username && t.done);
-		else
-			return e.filter(t => t.for === session.username && !t.done);
+		return e.filter(t => t.for === session.username);
 
 	if(currentTab.value == tabs[1])
-		if(done)
-			return e.filter(t => t.by === session.username && t.done);
-		else
-			return e.filter(t => t.by === session.username && !t.done);
+		return e.filter(t => t.by === session.username);
 
-	if(done)
-		return e.filter(t => t.done);
-	else
-		return e.filter(t => !t.done);
+	return e;
 }
 
 const modalState = ref<boolean>(false);
@@ -53,15 +47,9 @@ const addTask = () => {
 
 const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
-const logout = () => {
-	endSession();
-	router.push('/');
-};
-
 </script>
 
 <template>
-	<h1>T A S K S</h1>
 	<div class="card add" @click="() => modalState = true">Add</div>
 	<div class="card tabs">
 		<div :class="tabClass(tab)" v-for="tab in tabs" @click="() => currentTab = tab">{{ tab }}</div>
@@ -96,19 +84,11 @@ const logout = () => {
   	<button class="modal-close is-large" aria-label="close" @click="()=>modalState=false"></button>
 	</div>
 
-	<nav>
-		<div class="sessionContainer">
-			<img :src="users.filter(e => e.username === session.username)[0].avatar">
-			<p>{{ session.username }}</p>
-			<button @click="logout" class="button is-danger">Log Out</button>
-		</div>
-	</nav>
+	<NavBar />
 
 	<div class="tasks">
-		<div class="half">
-			<div class="heading">TODO</div>
-			<div class="taskList">
-				<div class="card task" v-for="task in getTasks(tasks, false)" :key="task.title">
+		<div class="tskLst">
+				<div class="card task" v-for="task in getTasks(tasks)" :key="task.title">
 					<div class="title">{{task.title}}</div>
 					<div class="data">
 						<div class="c">for</div>
@@ -122,73 +102,15 @@ const logout = () => {
 						<div class="c">by</div>
 						<span>{{task.by}}</span>
 					</div>
-					<button :class="done(task)" @click="()=>task.done = true">
+					<button :class="done(task)" @click="()=>task.done = !task.done">
 						{{ task.done ? '✘' : '✔' }}
 					</button>
 				</div>
 			</div>
-		</div>
-		<div class="half">
-			<div class="heading">DONE</div>
-			<div class="taskList">
-				<div class="card task" v-for="task in getTasks(tasks, true)" :key="task.title">
-					<div class="title">{{task.title}}</div>
-					<div class="data">
-						<div class="c">for</div>
-						<span>{{task.for}}</span>
-					</div>
-					<div class="data">
-						<div class="c">due</div>
-						<span>{{task.date}}</span>
-					</div>
-					<div class="data">
-						<div class="c">by</div>
-						<span>{{task.by}}</span>
-					</div>
-					<button :class="done(task)" @click="()=>task.done = false">
-						{{ task.done ? '✘' : '✔' }}
-					</button>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
-
-nav {
-	display: flex;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100px;
-	width: 100%;
-	background-color: transparent;
-
-	.sessionContainer {
-		display: flex;
-		position: absolute;
-		right: 0;
-		margin: 20px;
-
-		img {
-			height: 48px;
-			width: 48px;
-			border-radius: 50%;
-		}
-
-		p {
-			font-weight: 600;
-			margin: 0 20px;
-			display: flex;
-			align-items: center;
-		}
-
-		button {
-			font-weight: 500;
-		}
-	}
-}
 
 .modal-content {
 	width: 500px;
@@ -242,91 +164,65 @@ nav {
 	left: 300px;
 	right: 50px;
 	height: 80%;
+	width: 80%;
 
-	.half {
-		height: calc(100%);
-		width: calc(50%);
+	.tskLst {
+		top: 50px;
+		position: relative;
 		display: flex;
-		align-items: center;
+		height: calc(100% - 50px);
+		width: 100%;
+		display: flex;
 		flex-direction: column;
+		align-items: center;
 
-		.heading {
-			position: absolute;
-			font-size: 18px;
-			font-weight: 800;
-			height: 50px;
-			line-height: 50px;
-			top: 0;
-			color: rgb(161, 161, 161);
-		}
+		.task {
+			width: 95%;
+			display: block;
+			margin-top: 10px;
+			padding-bottom: 20px;
 
-		.taskList {
-			top: 50px;
-			position: relative;
-			display: flex;
-			height: calc(100% - 50px);
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
+			.title {
+				margin: 10px 0 0 10px;
+				font-size: 18px;
+				font-weight: 600;
+				padding: 10px;
+				width: 200px;
+			}
 
-			.task {
-				width: 95%;
-				display: block;
-				margin-top: 10px;
-				padding-bottom: 20px;
+			.data {
+				margin: 10px 0 0 20px;
+				font-weight: 500;
+				color: rgb(167, 167, 167);
+				text-align: center;
+				display: inline;
 
-				.title {
-					margin: 10px 0 0 10px;
-					font-size: 18px;
-					font-weight: 600;
-					padding: 10px;
-					width: 200px;
-				}
-
-				.data {
-					margin: 10px 0 0 20px;
-					font-weight: 500;
-					color: rgb(167, 167, 167);
-					text-align: center;
-					display: inline;
-
-						.c {
-							display: inline-block;
-						}
-
-					span {
-						color: white;
-						font-size: 14px;
-						font-weight: 600;
-						border-radius: 10px;
-						background-color: #f14668;
-						padding: 0 10px 0 10px;
-						margin-left: 10px;
+					.c {
+						display: inline-block;
 					}
-				}
 
-				button {
-					position: absolute;
-					bottom: 20px;
-					right: 30px;
-					padding: 5px;
-					height: 2em;
+				span {
+					color: white;
+					font-size: 14px;
 					font-weight: 600;
-					width: 40px;
+					border-radius: 10px;
+					background-color: #f14668;
+					padding: 0 10px 0 10px;
+					margin-left: 10px;
 				}
+			}
+
+			button {
+				position: absolute;
+				bottom: 20px;
+				right: 30px;
+				padding: 5px;
+				height: 2em;
+				font-weight: 600;
+				width: 40px;
 			}
 		}
 	}
-}
-
-h1 {
-	position: absolute;
-	color: rgb(41, 41, 41);
-	font-size: 36px;
-	font-weight: 900;
-	top: 100px;
-	left: 70px;
 }
 
 .add {
@@ -343,6 +239,7 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	z-index: 2;
 
 	&:hover {
 		color: rgb(46, 46, 46);
@@ -351,14 +248,17 @@ h1 {
 
 .tabs {
 	position: absolute;
-	width: 200px;
-	height: 400px;
-	top: 270px;
-	left: 50px;
+	width: 300px;
+	height: 100%;
+	top: 0;
+	left: 0;
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
+	justify-content: center;
 	flex-direction: column;
+	box-shadow: none;
+	border-right: solid grey 2px;
+	border-radius: 0;
 
 	.tab {
 		font-weight: 700;
@@ -367,6 +267,7 @@ h1 {
 		cursor: pointer;
 		width: 100%;
 		height: 40px;
+		padding: 50px;
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -14,7 +14,7 @@ import router from '../router';
 	<nav>
 		<h1 class="title">T A S K S</h1>
 		<div class="sessionContainer">
-			<img :src="users.filter(e => e.username === session.username)[0].avatar">
+			<img :src="users.filter(e => e.username === session.username)[0]?.avatar">
 			<p>{{ session.username }}</p>
 			<button @click="logout" class="button is-danger">
 				<span class="icon is-small">

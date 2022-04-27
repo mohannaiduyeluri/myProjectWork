@@ -57,6 +57,7 @@ const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button 
 		<span>Add</span>
 	</button>
 	<div class="card tabs">
+		<br><br>
 		<div :class="tabClass(tab)" v-for="tab in tabs" @click="() => currentTab = tab">{{ tab }}</div>
 	</div>
 

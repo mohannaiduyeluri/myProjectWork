@@ -6,8 +6,7 @@ import { users } from '../models/user';
 import NavBar from '../components/nav.vue';
 import router from '../router';
 
-const tabs = ["Assigned", "Created", "All"];
-const currentTab = ref(tabs[0]);
+const currentTab = ref("Assigned");
 
 const tabClass = (tab: string) => tab === currentTab.value ? 'tab active' : 'tab';
 
@@ -16,10 +15,10 @@ if(!session.isLoggedIn) router.push('/');
 const getTasks = (e: ITask[]): ITask[] => {
 	e = e.sort((a, b) => a.done ? 1: -1);
 
-	if(currentTab.value == tabs[0])
+	if(currentTab.value == "Assigned")
 		return e.filter(t => t.for === session.username);
 
-	if(currentTab.value == tabs[1])
+	if(currentTab.value == "Created")
 		return e.filter(t => t.by === session.username);
 
 	return e;
@@ -47,6 +46,10 @@ const addTask = () => {
 
 const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
+const gotoCalender = () => {
+	router.push('/calender');
+}
+
 </script>
 
 <template>
@@ -58,7 +61,10 @@ const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button 
 	</button>
 	<div class="card tabs">
 		<br><br>
-		<div :class="tabClass(tab)" v-for="tab in tabs" @click="() => currentTab = tab">{{ tab }}</div>
+		<div :class="tabClass('Assigned')" @click="() => currentTab = 'Assigned'">Assigned</div>
+		<div :class="tabClass('Created')" @click="() => currentTab = 'Created'">Created</div>
+		<div :class="tabClass('All')" @click="() => currentTab = 'All'">All</div>
+		<div class="tab" @click="gotoCalender">Calender</div>
 	</div>
 
 	<div :class="modalClass(modalState)">

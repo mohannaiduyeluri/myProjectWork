@@ -47,7 +47,7 @@ const addTask = () => {
 const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
 const gotoCalender = () => {
-	router.push('/calender');
+	router.push('/calendar');
 }
 
 </script>

@@ -7,33 +7,33 @@ import NavBar from '../components/nav.vue';
 import Calendar from '../components/calendar.vue';
 import router from '../router';
 
-const currentTab = ref("Assigned");
+const curTab = ref("Assigned");
 
-const tabClass = (tab: string) => tab === currentTab.value ? 'tab active' : 'tab';
+const clsTabs = (tab: string) => tab === curTab.value ? 'tab active' : 'tab';
 
 if(!session.isLoggedIn) router.push('/');
 
-const getTasks = (e: ITask[]): ITask[] => {
+const filterTasks = (e: ITask[]): ITask[] => {
 	e = e.sort((a, b) => a.done ? 1: -1);
 
-	if(currentTab.value == "Assigned")
+	if(curTab.value == "Assigned")
 		return e.filter(t => t.for === session.username);
 
-	if(currentTab.value == "Created")
+	if(curTab.value == "Created")
 		return e.filter(t => t.by === session.username);
 
 	return e;
 }
 
-const modalState = ref<boolean>(false);
+const modalSwitch = ref<boolean>(false);
 
-const modalClass = (modalState: boolean): string => modalState ? 'modal is-active' : 'modal';
+const modalCls = (modalState: boolean): string => modalState ? 'modal is-active' : 'modal';
 
 const title = ref<string>('');
 const tfor = ref<string>('');
 const date = ref<string>('');
 
-const addTask = () => {
+const pushTask = () => {
 	if(!session.username) return;
 	tasks.value.push({
 		by: session.username,
@@ -42,15 +42,15 @@ const addTask = () => {
 		for: tfor.value,
 		title: title.value
 	});
-	modalState.value = false;
+	modalSwitch.value = false;
 }
 
-const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
+const clsDone = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
-const setTab = (tab: string) => currentTab.value = tab;
+const setCurTab = (tab: string) => curTab.value = tab;
 
-const tasksVisible = () => {
-	return currentTab.value !== "Calendar"
+const taskSwitch = () => {
+	return curTab.value !== "Calendar"
 }
 
 const gotoContact = () => {
@@ -60,7 +60,7 @@ const gotoContact = () => {
 </script>
 
 <template>
-	<button class="button add" @click="() => modalState = true">
+	<button class="button add" @click="() => modalSwitch = true">
 		<span class="icon is-small">
 			<i class="fa-solid fa-plus"></i>
 		</span>
@@ -68,15 +68,15 @@ const gotoContact = () => {
 	</button>
 	<div class="card tabs">
 		<br><br><br><br>
-		<div :class="tabClass('Assigned')" @click="setTab('Assigned')">Assigned</div>
-		<div :class="tabClass('Created')" @click="setTab('Created')">Created</div>
-		<div :class="tabClass('All')" @click="setTab('All')">All</div>
-		<div :class="tabClass('Calendar')" @click="setTab('Calendar')">Calender</div>
+		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned')">Assigned</div>
+		<div :class="clsTabs('Created')" @click="setCurTab('Created')">Created</div>
+		<div :class="clsTabs('All')" @click="setCurTab('All')">All</div>
+		<div :class="clsTabs('Calendar')" @click="setCurTab('Calendar')">Calender</div>
 		<div class="tab" @click="gotoContact">Contact Us</div>
 	</div>
 
-	<div :class="modalClass(modalState)">
-  	<div class="modal-background" @click="()=>modalState=false"></div>
+	<div :class="modalCls(modalSwitch)">
+  	<div class="modal-background" @click="()=>modalSwitch=false"></div>
   	<div class="modal-content">
   	  <div class="card">
 				<h1>Add Task</h1>
@@ -98,17 +98,17 @@ const gotoContact = () => {
 				</div>
 
 				<input class="input is-normal" type="date" placeholder="Date" v-model="date" />
-				<button class="button is-normal" @click="addTask">Add</button>
+				<button class="button is-normal" @click="pushTask">Add</button>
 			</div>
   	</div>
-  	<button class="modal-close is-large" aria-label="close" @click="()=>modalState=false"></button>
+  	<button class="modal-close is-large" aria-label="close" @click="()=>modalSwitch=false"></button>
 	</div>
 
 	<NavBar />
 
-	<div v-if="tasksVisible()" class="tasks">
+	<div v-if="taskSwitch()" class="tasks">
 		<div class="tskLst">
-				<div class="card task" v-for="task in getTasks(tasks)" :key="task.title">
+				<div class="card task" v-for="task in filterTasks(tasks)" :key="task.title">
 					<div class="title">{{task.title}}</div>
 					<div class="data">
 						<div class="c">for</div>
@@ -122,14 +122,14 @@ const gotoContact = () => {
 						<div class="c">by</div>
 						<span>{{task.by}}</span>
 					</div>
-					<button :class="done(task)" @click="()=>task.done = !task.done">
+					<button :class="clsDone(task)" @click="()=>task.done = !task.done">
 						{{ task.done ? '✘' : '✔' }}
 					</button>
 				</div>
 			</div>
 	</div>
 	
-	<Calendar class="calendar" v-if="!tasksVisible()" />
+	<Calendar class="calendar" v-if="!taskSwitch()" />
 
 </template>
 

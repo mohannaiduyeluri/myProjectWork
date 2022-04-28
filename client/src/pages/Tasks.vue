@@ -53,6 +53,10 @@ const tasksVisible = () => {
 	return currentTab.value !== "Calendar"
 }
 
+const gotoContact = () => {
+	router.push('/contact');
+}
+
 </script>
 
 <template>
@@ -68,6 +72,7 @@ const tasksVisible = () => {
 		<div :class="tabClass('Created')" @click="setTab('Created')">Created</div>
 		<div :class="tabClass('All')" @click="setTab('All')">All</div>
 		<div :class="tabClass('Calendar')" @click="setTab('Calendar')">Calender</div>
+		<div class="tab" @click="gotoContact">Contact Us</div>
 	</div>
 
 	<div :class="modalClass(modalState)">

@@ -5,6 +5,7 @@
 import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { ITask, tasks } from "../models/tasks";
 
 // Vue.use(BootstrapVue);
 
@@ -64,7 +65,7 @@ export default {
 
       var firstDay = new Date(y, m, 1).getDay();
       var lastDay = new Date(y, m + 1, 0).getDate();
-      var html = "<tr style='height: 55px;'>";
+      var html = "<tr style='height: 80px;'>";
       var count = 0;
       var dayCount = 1;
 
@@ -97,18 +98,37 @@ export default {
 
         if (count != 0 && count % 7 == 0) {
           html += " </tr>";
-          html += " <tr style='height: 120px;'>";
+          html += " <tr style='height: 80px;'>";
         }
         html +=
-          "<td class='clouredTd text cls" +
-          date2 +
-          "' tdVal=" +
-          date2 +
-          "  id='tabTd" +
-          dayCount +
-          "' align='center' style='width:14%; height:120px'><div style='float:left;'>" +
-          dayCount +
-          "</div></td>";
+          "<td class='clouredTd" +
+           date2 +
+           "' tdVal=" +
+           date2 +
+           "  id='tabTd" +
+           dayCount +
+          "' align='center'><div style='float:left;'>" +
+           dayCount +
+          "</div>";
+        var dd = monthInNumber + "-" + dayCount + "-" + y;
+//        console.log(dd);
+        for (let i = 0; i < tasks.value.length; i++) {
+          if (tasks.value[i].date == dd) {
+            if (tasks.value[i].done == true) {
+              html +=
+                "<div style='float:right;font-size: 12px;background-color:green;'><i>" +
+                tasks.value[i].title +
+                "</i></div>";
+            } else {
+              html +=
+                "<div style='float:right;font-size: 12px;background-color:red;'><i>" +
+                tasks.value[i].title +
+                "</i></div>";
+            }
+          }
+        }
+        html += "</td>";
+        
         count++;
       }
 
@@ -132,7 +152,7 @@ export default {
 <template>
   <div class="App">
     <div
-      class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12"
+      class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 calendar"
       style="padding: 0; border: 1px solid #000000"
     >
       <table
@@ -145,16 +165,16 @@ export default {
               <div class="row">
                 <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12">
                   <span>
-                    <a @click="setcalander(1)"> L </a>
+                    <a @click="setcalander(1)"> <i class="fa fa-arrow-left"></i> </a>
                   </span>
                   <span
                     class="whiteCr text"
                     id="monthYear"
-                    style="padding-left: 50%"
+                    style="padding-left: 40%"
                   >
                   </span>
                   <span style="float: right">
-                    <a @click="setcalander(2)"> R </a>
+                    <a @click="setcalander(2)"> <i class="fa fa-arrow-right"></i> </a>
                   </span>
                 </div>
               </div>
@@ -186,6 +206,13 @@ clouredTd {
 
 td {
 	cursor: pointer;
+}
+.calendar {
+    position: absolute;
+    top:-10%;
+    left: 50%;
+    transform: translateX(-35%);
+    width: 85%;
 }
 
 </style>

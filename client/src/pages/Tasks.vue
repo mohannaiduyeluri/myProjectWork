@@ -63,7 +63,7 @@ const tasksVisible = () => {
 		<span>Add</span>
 	</button>
 	<div class="card tabs">
-		<br><br>
+		<br><br><br><br>
 		<div :class="tabClass('Assigned')" @click="setTab('Assigned')">Assigned</div>
 		<div :class="tabClass('Created')" @click="setTab('Created')">Created</div>
 		<div :class="tabClass('All')" @click="setTab('All')">All</div>
@@ -123,7 +123,7 @@ const tasksVisible = () => {
 				</div>
 			</div>
 	</div>
-
+	
 	<Calendar class="calendar" v-if="!tasksVisible()" />
 
 </template>

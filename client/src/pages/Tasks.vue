@@ -4,6 +4,7 @@ import { session } from '../models/session';
 import { ITask, tasks } from '../models/tasks';
 import { users } from '../models/user';
 import NavBar from '../components/nav.vue';
+import Calendar from '../components/calendar.vue';
 import router from '../router';
 
 const currentTab = ref("Assigned");
@@ -46,8 +47,10 @@ const addTask = () => {
 
 const done = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
-const gotoCalender = () => {
-	router.push('/calendar');
+const setTab = (tab: string) => currentTab.value = tab;
+
+const tasksVisible = () => {
+	return currentTab.value !== "Calendar"
 }
 
 </script>
@@ -61,10 +64,10 @@ const gotoCalender = () => {
 	</button>
 	<div class="card tabs">
 		<br><br>
-		<div :class="tabClass('Assigned')" @click="() => currentTab = 'Assigned'">Assigned</div>
-		<div :class="tabClass('Created')" @click="() => currentTab = 'Created'">Created</div>
-		<div :class="tabClass('All')" @click="() => currentTab = 'All'">All</div>
-		<div class="tab" @click="gotoCalender">Calender</div>
+		<div :class="tabClass('Assigned')" @click="setTab('Assigned')">Assigned</div>
+		<div :class="tabClass('Created')" @click="setTab('Created')">Created</div>
+		<div :class="tabClass('All')" @click="setTab('All')">All</div>
+		<div :class="tabClass('Calendar')" @click="setTab('Calendar')">Calender</div>
 	</div>
 
 	<div :class="modalClass(modalState)">
@@ -98,7 +101,7 @@ const gotoCalender = () => {
 
 	<NavBar />
 
-	<div class="tasks">
+	<div v-if="tasksVisible()" class="tasks">
 		<div class="tskLst">
 				<div class="card task" v-for="task in getTasks(tasks)" :key="task.title">
 					<div class="title">{{task.title}}</div>
@@ -120,10 +123,18 @@ const gotoCalender = () => {
 				</div>
 			</div>
 	</div>
+
+	<Calendar class="calendar" v-if="!tasksVisible()" />
+
 </template>
 
 <style scoped lang="scss">
-
+.calendar {
+	position: absolute;
+	top: 150px;
+	left: 50%;
+	transform: translateX(-50%);
+}
 .modal-content {
 	width: 500px;
 	height: 600px;

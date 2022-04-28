@@ -40,6 +40,9 @@ var firstTime = 1;
 export default {
   name: "App",
   methods: {
+		dayClicked: () => {
+			console.log("Day clicked!");
+		},
     setcalander: function (type) {
       var divNew = document.getElementById("actualDay");
       divNew.innerHTML = "";
@@ -179,6 +182,10 @@ export default {
 clouredTd {
   background-color: #f5f5f5;
   width: 15%;
+}
+
+td {
+	cursor: pointer;
 }
 
 </style>

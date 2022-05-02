@@ -60,6 +60,7 @@ async function update(id, newUser){
 }
 
 async function login(username, password){
+		console.log("Count", await collection.countDocuments());
     const user = await collection.findOne({ username });
     if(!user){
         throw { statusCode: 404, message: 'User not found' };

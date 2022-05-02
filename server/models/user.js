@@ -6,6 +6,8 @@ const { db, isConnected, ObjectId } = require('./mongo');
 
 const collection = db.db("DB_APP").collection("users");
 
+const SALT_ROUNDS = +process.env.SALT_ROUNDS;
+
 let hieghstId = 3;
 
 const list = [
@@ -46,7 +48,7 @@ async function remove(id){
 async function update(id, newUser){
 
     if(newUser.password){
-        newUser.password = await bcrypt.hash(newUser.password, 10);
+        newUser.password = await bcrypt.hash(newUser.password, SALT_ROUNDS);
     }
     
     newUser = await collection.findOneAndUpdate(
@@ -54,7 +56,6 @@ async function update(id, newUser){
         { $set: newUser },
         { returnDocument: 'after' }
     );
-    console.log(newUser);
     
     return { ...newUser, password: undefined};
 }
@@ -89,8 +90,12 @@ function fromToken(token){
     });
 }
 
-function seed(){
-    return collection.insertMany(list);
+const seed = () => {
+	const l = list.map(e => ({
+		...e,
+		password: bcrypt.hashSync(e.password, SALT_ROUNDS)
+	}));
+  return collection.insertMany(l);
 }
 
 module.exports = {

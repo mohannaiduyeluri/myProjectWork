@@ -1,5 +1,4 @@
-const url = "https://localhost:3000";
-const url_login = "https://localhost:3000/api/users/login";
+const url_login = "/api/users/login";
 
 export const login = async (username: string, password: string) => {
 	const method = 'POST';

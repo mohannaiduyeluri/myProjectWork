@@ -1,6 +1,3 @@
-/* B"H
-*/
-
 const { db, ObjectId } = require('./mongo');
 const userModel = require('./user');
 

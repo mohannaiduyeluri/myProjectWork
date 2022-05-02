@@ -1,6 +1,3 @@
-/* B"H
-*/
-
 module.exports = {
 	requireAuth(req, res, next) {
 			if(!req.user) {

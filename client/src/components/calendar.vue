@@ -1,63 +1,47 @@
 <script defer lang="ts">
-import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { ITask, tasks } from "../models/tasks";
+import { DAYS, MONTHS } from "../models/calendar";
 
-
-var days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-var months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+var months = MONTHS;
 var date = new Date();
 var y = date.getFullYear();
 var m = date.getMonth();
 var firstDate = "",
   lastDate = "";
 var firstTime = 1;
+// var monthYearHtml = "";
 export default {
   name: "App",
+  data() {
+    return {
+      DAYS: DAYS,
+      monthYearHtml: "March 2020",
+    }
+  },
   methods: {
-		dayClicked: () => {
-			console.log("Day clicked!");
-		},
+    dayClicked: () => {
+      console.log("Day clicked!");
+    },
+    getDateObject: function (type) {
+      if (type == 0) {
+        return new Date();
+      } else if (type == 1) {
+        return new Date(date.setMonth(m - 1));
+      } else if (type == 2) {
+        return new Date(date.setMonth(m + 1));
+      }
+    },
     setcalander: function (type) {
       var divNew = document.getElementById("actualDay");
       divNew.innerHTML = "";
-      var div = document.getElementById("monthYear");
-      div.innerHTML = "";
-      if (type == 0) {
-        date = new Date();
-      } else if (type == 1) {
-        date = new Date(date.setMonth(m - 1));
+      // var div = document.getElementById("monthYear");
+      // div.innerHTML = "";
+      date = this.getDateObject(type)
         (y = date.getFullYear()), (m = date.getMonth());
         m = date.getMonth();
-      } else if (type == 2) {
-        date = new Date(date.setMonth(m + 1));
-        (y = date.getFullYear()), (m = date.getMonth());
-        m = date.getMonth();
-      }
-
-      var month = months[m];
+      var month = MONTHS[m];
 
       var firstDay = new Date(y, m, 1).getDay();
       var lastDay = new Date(y, m + 1, 0).getDate();
@@ -65,13 +49,13 @@ export default {
       var count = 0;
       var dayCount = 1;
 
-      var div = document.getElementById("monthYear");
-      div.innerHTML +=
-        "<span style='padding-top: 5px; padding-left: 3px; font-size: 20px;'>" +
-        month +
-        "&nbsp" +
-        y +
-        "</span>";
+      // var div = document.getElementById("monthYear");
+      // monthYearHtml +=
+      //   "<span style='padding-top: 5px; padding-left: 3px; font-size: 20px;'>" +
+      //   month +
+      //   "&nbsp" +
+      //   y +
+      //   "</span>";
 
       var monthInNumber = m + 1;
       if (monthInNumber < 10) {
@@ -81,6 +65,7 @@ export default {
         html += "<td class='clouredTd'></td>";
         count++;
       }
+      var cnt = 0;
       for (dayCount = 1; dayCount <= lastDay; dayCount++) {
         var date2 = y;
         if (m < 9) date2 += "-0" + (m + 1);
@@ -98,33 +83,36 @@ export default {
         }
         html +=
           "<td class='clouredTd" +
-           date2 +
-           "' tdVal=" +
-           date2 +
-           "  id='tabTd" +
-           dayCount +
+          date2 +
+          "' tdVal=" +
+          date2 +
+          "  id='tabTd" +
+          dayCount +
           "' align='center'><div style='float:left;'>" +
-           dayCount +
+          dayCount +
           "</div>";
         var dd = monthInNumber + "-" + dayCount + "-" + y;
-//        console.log(dd);
+        //        console.log(dd);
+        // cnt = 0;
         for (let i = 0; i < tasks.value.length; i++) {
           if (tasks.value[i].date == dd) {
+            cnt++;
             if (tasks.value[i].done == true) {
               html +=
                 "<div style='float:right;font-size: 12px;background-color:green;'><i style='color:white'>" +
-                tasks.value[i].title +
-                "</i></div>";
+                cnt + ") " + tasks.value[i].title +
+                "&nbsp;&nbsp;</i></div>";
             } else {
               html +=
                 "<div style='float:right;font-size: 12px;background-color:red;'><i style='color:white'>" +
-                tasks.value[i].title +
-                "</i></div>";
+                cnt + ") " + tasks.value[i].title +
+                "&nbsp;&nbsp;</i></div>";
             }
           }
         }
+        cnt = 0;
         html += "</td>";
-        
+
         count++;
       }
 
@@ -147,14 +135,9 @@ export default {
 
 <template>
   <div class="App">
-    <div
-      class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 calendar"
-      style="padding: 0; border: 1px solid #000000"
-    >
-      <table
-        class="table table-responsive table-bordered"
-        style="margin-bottom: 1px"
-      >
+    <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12 calendar"
+      style="padding: 0; border: 1px solid #000000">
+      <table class="table table-responsive table-bordered" style="margin-bottom: 1px">
         <thead>
           <tr class="tb-head">
             <td colspan="7">
@@ -163,11 +146,7 @@ export default {
                   <span>
                     <a @click="setcalander(1)"> <i class="fa fa-arrow-left"></i> </a>
                   </span>
-                  <span
-                    class="whiteCr text"
-                    id="monthYear"
-                    style="padding-left: 45%"
-                  >
+                  <span v-html="monthYearHtml" class="whiteCr text" style="padding-left: 45%">
                   </span>
                   <span style="float: right">
                     <a @click="setcalander(2)"> <i class="fa fa-arrow-right"></i> </a>
@@ -177,13 +156,7 @@ export default {
             </td>
           </tr>
           <tr class="blueBr">
-            <td align="center" class="blackBg text" style="width: 220px;">Sun</td>
-            <td align="center" class="blackBg text" style="width: 14%">Mon</td>
-            <td align="center" class="blackBg text" style="width: 14%">Tue</td>
-            <td align="center" class="blackBg text" style="width: 14%">Wed</td>
-            <td align="center" class="blackBg text" style="width: 14%">Thu</td>
-            <td align="center" class="blackBg text" style="width: 14%">Fri</td>
-            <td align="center" class="blackBg text" style="width: 14%">Sat</td>
+            <td align="center" class="blackBg text" style="width: 220px;" v-for="item in DAYS">{{ item }}</td>
           </tr>
         </thead>
         <tbody id="actualDay" style="background-color: white"></tbody>
@@ -201,14 +174,14 @@ clouredTd {
 }
 
 td {
-	cursor: pointer;
-}
-.calendar {
-    position: absolute;
-    top:-10%;
-    left: 50%;
-    transform: translateX(-35%);
-    width: 85%;
+  cursor: pointer;
 }
 
+.calendar {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-35%);
+  width: 85%;
+}
 </style>

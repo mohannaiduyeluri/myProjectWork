@@ -1,4 +1,3 @@
-
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = process.env.MONGO_URI;

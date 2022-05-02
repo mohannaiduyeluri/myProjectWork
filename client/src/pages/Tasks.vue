@@ -104,7 +104,7 @@ const gotoContact = () => {
   	<button class="modal-close is-large" aria-label="close" @click="()=>modalSwitch=false"></button>
 	</div>
 
-	<NavBar />
+	<!-- <NavBar /> -->
 
 	<div v-if="taskSwitch()" class="tasks">
 		<div class="tskLst">

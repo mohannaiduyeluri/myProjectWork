@@ -1,11 +1,11 @@
 http://localhost:3001
 
 ###
-GET http://localhost:3000/api/users
+GET http://localhost:3001/api/users
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiTW9oYW4ifQ.rANSUQdc2nanucT-GB3AFcrROFM3vkvFJn76aoT8OTk
 
 ###
-GET http://localhost:3001/api/users/625359480694a2e572214279
+GET http://localhost:3001/api/users/62700391f7b70952797db73d
 
 ###
 GET http://localhost:3001/api/users/handle/vp
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/users/seed
+POST http://localhost:3001/api/users/seed
 
 ###
 https://api.openweathermap.org/data/2.5/weather?q=New York&appid={{$dotenv OPENWEATHER_KEY}}

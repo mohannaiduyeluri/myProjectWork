@@ -1,6 +1,6 @@
 import { session } from './models/session';
 
-const url_login = "/api/users/login";
+const url_login = "http://localhost:3001/api/users/login";
 
 export interface IRes<T> {
 	success: boolean;

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { db, isConnected, ObjectId } = require('./mongo');
 
-const collection = db.db("DB_APP").collection("users");
+const collection = db.db("finalProject").collection("users");
 
 const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 

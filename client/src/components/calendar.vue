@@ -9,7 +9,7 @@ var date = new Date();
 var y = date.getFullYear();
 var m = date.getMonth();
 var firstDate = "",
-  lastDate = "";
+lastDate = "";
 var firstTime = 1;
 // var monthYearHtml = "";
 export default {
@@ -18,6 +18,7 @@ export default {
     return {
       DAYS: DAYS,
       monthYearHtml: "March 2020",
+      actualDayHtml:""
     }
   },
   methods: {
@@ -25,6 +26,7 @@ export default {
       console.log("Day clicked!");
     },
     getDateObject: function (type) {
+      // alert("working");
       if (type == 0) {
         return new Date();
       } else if (type == 1) {
@@ -39,8 +41,8 @@ export default {
       // var div = document.getElementById("monthYear");
       // div.innerHTML = "";
       date = this.getDateObject(type)
-        (y = date.getFullYear()), (m = date.getMonth());
-        m = date.getMonth();
+      y = date.getFullYear();
+      m = date.getMonth();
       var month = MONTHS[m];
 
       var firstDay = new Date(y, m, 1).getDay();
@@ -50,12 +52,12 @@ export default {
       var dayCount = 1;
 
       // var div = document.getElementById("monthYear");
-      // monthYearHtml +=
-      //   "<span style='padding-top: 5px; padding-left: 3px; font-size: 20px;'>" +
-      //   month +
-      //   "&nbsp" +
-      //   y +
-      //   "</span>";
+      this.monthYearHtml =
+        "<span style='padding-top: 5px; padding-left: 3px; font-size: 20px;'>" +
+        month +
+        "&nbsp" +
+        y +
+        "</span>";
 
       var monthInNumber = m + 1;
       if (monthInNumber < 10) {
@@ -123,12 +125,14 @@ export default {
 
       if (!html.endsWith("</tr>")) html += " </tr>";
 
-      var divNew = document.getElementById("actualDay");
-      divNew.innerHTML += html;
+      // var divNew = document.getElementById("actualDay");
+      // divNew.innerHTML += html;
+      this.actualDayHtml = html;
     },
   },
   mounted() {
     this.setcalander(0);
+    // this.data.actualDayHtml = "mohan";
   },
 };
 </script>
@@ -159,7 +163,7 @@ export default {
             <td align="center" class="blackBg text" style="width: 220px;" v-for="item in DAYS">{{ item }}</td>
           </tr>
         </thead>
-        <tbody id="actualDay" style="background-color: white"></tbody>
+        <tbody id="actualDay" v-html="actualDayHtml" style="background-color: white"></tbody>
       </table>
     </div>
     <br />

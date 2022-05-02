@@ -10,7 +10,7 @@
 </script>
 
 <template>
-	<nav>
+	<nav v-if="session.username">
 		<h1 class="title">T A S K S</h1>
 		<div class="sessionContainer">
 			<img :src="session.avatar">

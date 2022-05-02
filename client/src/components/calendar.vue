@@ -1,13 +1,9 @@
-
-
 <script defer lang="ts">
-// import Vue from 'vue';
 import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { ITask, tasks } from "../models/tasks";
 
-// Vue.use(BootstrapVue);
 
 var days = [
   "Sunday",
@@ -116,12 +112,12 @@ export default {
           if (tasks.value[i].date == dd) {
             if (tasks.value[i].done == true) {
               html +=
-                "<div style='float:right;font-size: 12px;background-color:green;'><i>" +
+                "<div style='float:right;font-size: 12px;background-color:green;'><i style='color:white'>" +
                 tasks.value[i].title +
                 "</i></div>";
             } else {
               html +=
-                "<div style='float:right;font-size: 12px;background-color:red;'><i>" +
+                "<div style='float:right;font-size: 12px;background-color:red;'><i style='color:white'>" +
                 tasks.value[i].title +
                 "</i></div>";
             }
@@ -170,7 +166,7 @@ export default {
                   <span
                     class="whiteCr text"
                     id="monthYear"
-                    style="padding-left: 40%"
+                    style="padding-left: 45%"
                   >
                   </span>
                   <span style="float: right">

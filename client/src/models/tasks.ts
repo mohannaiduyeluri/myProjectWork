@@ -27,7 +27,14 @@ export const tasks = ref<ITask[]>([
 		by: 'user_2',
 		date: '04-24-2022',
 		done: true,
-		title: 'Do something',
+		title: 'Integrate jQuery',
+		for: 'Mohan'
+	},
+	{
+		by: 'user_2',
+		date: '04-24-2022',
+		done: true,
+		title: 'Make a demo',
 		for: 'Mohan'
 	}
 ]);

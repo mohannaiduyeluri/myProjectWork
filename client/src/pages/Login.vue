@@ -2,25 +2,28 @@
 import { ref } from 'vue';
 import { session } from '../models/session';
 import { users } from '../models/user';
+import { login } from '../request';
 import router from '../router';
 
 const user = ref<string>('');
 const pass = ref<string>('');
 const lErr = ref<string>('');
 
-const login = () => {
+const handle_login = () => {
 	lErr.value = ''
 
-	const valid = users.value.filter(u => u.username === user.value && u.password === pass.value).length > 0;
+	login(user.value, pass.value);
 
-	if(!valid) {
-		lErr.value = "Invalid Credentials";
-		return;
-	}
+	// const valid = users.value.filter(u => u.username === user.value && u.password === pass.value).length > 0;
 
-	session.username = user.value;
-	session.isLoggedIn = true;
-	router.push('/tasks');
+	// if(!valid) {
+	// 	lErr.value = "Invalid Credentials";
+	// 	return;
+	// }
+
+	// session.username = user.value;
+	// session.isLoggedIn = true;
+	// router.push('/tasks');
 };
 
 </script>
@@ -31,7 +34,7 @@ const login = () => {
 		<h1 class="title">To Do App</h1>
 		<input class="input" type="text" placeholder="Username" v-model="user" />
 		<input class="input" type="password" placeholder="Password" v-model="pass" />
-		<button class="button" @click="login">
+		<button class="button" @click="handle_login">
 			<span class="icon is-small">
 				<i class="fa-solid fa-right-to-bracket"></i>
 			</span>

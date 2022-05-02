@@ -4,7 +4,7 @@
 const { db, ObjectId } = require('./mongo');
 const userModel = require('./user');
 
-const collection = db.db("gratitude").collection('posts');
+const collection = db.db("DB_APP").collection('tasks');
 
 let hieghstId = 3;
 

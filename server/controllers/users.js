@@ -52,7 +52,7 @@ app
 
     })
     .post('/login', (req, res, next) => {
-        userModel.login(req.body.email, req.body.password)
+        userModel.login(req.body.username, req.body.password)
         .then(user => {
             res.send({ success: true, errors: [], data: user });
         }).catch(next);

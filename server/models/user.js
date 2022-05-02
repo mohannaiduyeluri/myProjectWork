@@ -4,38 +4,21 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { db, isConnected, ObjectId } = require('./mongo');
 
-const collection = db.db("gratitude").collection("users");
+const collection = db.db("DB_APP").collection("users");
 
 let hieghstId = 3;
 
 const list = [
-    {
-        firstName: 'John',
-        lastName: 'Doe',
-        handle: 'johndoe',
-        password: 'password',
-        email: 'jhon@doe.com',
-        pic: 'https://randomuser.me/api/portraits/men/1.jpg',
-        id: 1,
-    },
-    {
-        firstName: 'Vladimir',
-        lastName: 'Putin',
-        handle: 'russian_dictator',
-        password: 'long table',
-        email: 'jhon@doe.com',
-        pic: 'https://randomuser.me/api/portraits/men/2.jpg',
-        id: 2,
-    },
-    {
-        firstName: 'Kamala',
-        lastName: 'Harris',
-        handle: 'vp',
-        password: 'password',
-        email: 'kamala@whitehouse.org',
-        pic: 'https://randomuser.me/api/portraits/women/3.jpg',
-        id: 3,
-    },
+	{
+		username: 'Mohan',
+		password: 'Mohan',
+		avatar: "https://randomuser.me/api/portraits/men/1.jpg"
+	},
+	{
+		username: 'user_2',
+		password: 'Mohan',
+		avatar: "https://randomuser.me/api/portraits/men/2.jpg"
+	},
 ];
 
 async function get(id){
@@ -76,8 +59,8 @@ async function update(id, newUser){
     return { ...newUser, password: undefined};
 }
 
-async function login(email, password){
-    const user = await collection.findOne({ email });
+async function login(username, password){
+    const user = await collection.findOne({ username });
     if(!user){
         throw { statusCode: 404, message: 'User not found' };
     }
@@ -86,7 +69,7 @@ async function login(email, password){
     }
 
     const data = { ...user, password: undefined };
-    const token = jwt.sign( data, process.env.JWT_SECRET);
+    const token = jwt.sign(data, process.env.JWT_SECRET);
 
     return { ...data, token };
 

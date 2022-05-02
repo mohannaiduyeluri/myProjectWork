@@ -1,7 +1,6 @@
 <script setup lang="ts">
-	import { users } from '../models/user';
 	import { endSession, session } from '../models/session';
-import router from '../router';
+	import router from '../router';
 
 	const logout = () => {
 		endSession();
@@ -14,7 +13,7 @@ import router from '../router';
 	<nav>
 		<h1 class="title">T A S K S</h1>
 		<div class="sessionContainer">
-			<img :src="users.filter(e => e.username === session.username)[0]?.avatar">
+			<img :src="session.avatar">
 			<p>{{ session.username }}</p>
 			<button @click="logout" class="button is-danger">
 				<span class="icon is-small">

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { session } from '../models/session';
-import { users } from '../models/user';
 import { login } from '../request';
 import router from '../router';
 
@@ -9,21 +7,16 @@ const user = ref<string>('');
 const pass = ref<string>('');
 const lErr = ref<string>('');
 
-const handle_login = () => {
+const handle_login = async () => {
 	lErr.value = ''
 
-	login(user.value, pass.value);
+	const res = await login(user.value, pass.value);
 
-	// const valid = users.value.filter(u => u.username === user.value && u.password === pass.value).length > 0;
+	if(!res.success) {
+		return lErr.value = res.errors[0];
+	};
 
-	// if(!valid) {
-	// 	lErr.value = "Invalid Credentials";
-	// 	return;
-	// }
-
-	// session.username = user.value;
-	// session.isLoggedIn = true;
-	// router.push('/tasks');
+	router.push('/tasks');
 };
 
 </script>

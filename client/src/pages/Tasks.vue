@@ -1,28 +1,34 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { session } from '../models/session';
-import { ITask, tasks } from '../models/tasks';
-import { users } from '../models/user';
+import { ITask, tasks, load, addNewTask } from '../models/tasks';
+import { users, loadUsers } from '../models/user';
 import NavBar from '../components/nav.vue';
 import Calendar from '../components/calendar.vue';
 import router from '../router';
 
-const curTab = ref("Assigned");
+load();
+loadUsers();
+// console.log("printing tasks new ", tasks);
+
+const curTab = ref("All");
 
 const clsTabs = (tab: string) => tab === curTab.value ? 'tab active' : 'tab';
 
 if(!session.isLoggedIn) router.push('/');
 
 const filterTasks = (e: ITask[]): ITask[] => {
-	e = e.sort((a, b) => a.done ? 1: -1);
+	// load();
+	// console.log("printing tasks ", tasks);
+	// console.log("printing sent tasks in method ", e);
+	e = Array.isArray(e)? e.sort((a, b) => a.done ? 1: -1): [];
 
 	if(curTab.value == "Assigned")
-		return e.filter(t => t.for === session.username);
+		filteredTasks.value = e?.filter(t => t.to === session.username);
 
-	if(curTab.value == "Created")
-		return e.filter(t => t.by === session.username);
+	else if(curTab.value == "Created")
+		filteredTasks.value = e?.filter(t => t.by === session.username);
 
-	return e;
 }
 
 const modalSwitch = ref<boolean>(false);
@@ -32,16 +38,31 @@ const modalCls = (modalState: boolean): string => modalState ? 'modal is-active'
 const title = ref<string>('');
 const tfor = ref<string>('');
 const date = ref<string>('');
+const filteredTasks = ref<ITask[]>([]);
+filteredTasks.value = tasks.value;
+// curTab.value = "Assigned"
+// filteredTasks.value = filterTasks(tasks.value);
 
 const pushTask = () => {
 	if(!session.username) return;
-	tasks.value.push({
+	 var dateArr = date.value.split('-');
+	date.value = dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0];
+	addNewTask({
 		by: session.username,
 		date: date.value,
 		done: false,
-		for: tfor.value,
+		to: tfor.value,
 		title: title.value
 	});
+	load();
+	// console.log("printing tasks after load calling ", tasks);
+	// tasks.value?.push({
+	// 	by: session.username,
+	// 	date: date.value,
+	// 	done: false,
+	// 	to: tfor.value,
+	// 	title: title.value
+	// });
 	modalSwitch.value = false;
 }
 
@@ -54,8 +75,11 @@ const taskSwitch = () => {
 }
 
 const gotoContact = () => {
+	// console.log("goto contact");
 	router.push('/contact');
+	// router.push('/cale6ndar');
 }
+
 
 </script>
 
@@ -68,9 +92,9 @@ const gotoContact = () => {
 	</button>
 	<div class="card tabs">
 		<br><br><br><br>
-		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned')">Assigned</div>
-		<div :class="clsTabs('Created')" @click="setCurTab('Created')">Created</div>
-		<div :class="clsTabs('All')" @click="setCurTab('All')">All</div>
+		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned');filterTasks(tasks)">Assigned</div>
+		<div :class="clsTabs('Created')" @click="setCurTab('Created');filterTasks(tasks)">Created</div>
+		<div :class="clsTabs('All')" @click="setCurTab('All');filterTasks(tasks)">All</div>
 		<div :class="clsTabs('Calendar')" @click="setCurTab('Calendar')">Calender</div>
 		<div class="tab" @click="gotoContact">Contact Us</div>
 	</div>
@@ -108,11 +132,11 @@ const gotoContact = () => {
 
 	<div v-if="taskSwitch()" class="tasks">
 		<div class="tskLst">
-				<div class="card task" v-for="task in filterTasks(tasks)" :key="task.title">
+				<div class="card task" v-for="task in filteredTasks" :key="task.title">
 					<div class="title">{{task.title}}</div>
 					<div class="data">
 						<div class="c">for</div>
-						<span>{{task.for}}</span>
+						<span>{{task.to}}</span>
 					</div>
 					<div class="data">
 						<div class="c">due</div>

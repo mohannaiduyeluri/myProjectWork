@@ -5,7 +5,7 @@ const { join } = require('path');
 
 const userModel = require('./models/user');
 const usersController = require('./controllers/users');
-const postsController = require('./controllers/posts');
+const tasksController = require('./controllers/tasks');
 
 const { requireAuth } = require('./models/auth');
 
@@ -42,7 +42,7 @@ app
 			res.send('You are at the root of the API.');
 	})
 	.use('/api/users', usersController)
-	.use('/api/posts', /*requireAuth,*/ postsController)
+	.use('/api/tasks', tasksController)
 	.use((err, req, res, next) => {
 			console.error(err);
 			res .status(err.statusCode || 500)

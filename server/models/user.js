@@ -17,9 +17,19 @@ const list = [
 		avatar: "https://randomuser.me/api/portraits/men/1.jpg"
 	},
 	{
-		username: 'user_2',
-		password: 'Mohan',
+		username: 'Sandeep',
+		password: 'Sandeep',
 		avatar: "https://randomuser.me/api/portraits/men/2.jpg"
+	},
+    {
+		username: 'Yeluri',
+		password: 'Yeluri',
+		avatar: "https://randomuser.me/api/portraits/men/3.jpg"
+	},
+    {
+		username: 'Sunny',
+		password: 'Sunny',
+		avatar: "https://randomuser.me/api/portraits/men/4.jpg"
 	},
 ];
 
@@ -71,7 +81,7 @@ async function login(username, password){
 
     const data = { ...user, password: undefined };
     const token = jwt.sign(data, process.env.JWT_SECRET);
-
+    
     return { ...data, token };
 
 }

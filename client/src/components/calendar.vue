@@ -1,8 +1,10 @@
 <script defer lang="ts">
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { ITask, tasks } from "../models/tasks";
+import { ITask, tasks, load } from "../models/tasks";
 import { DAYS, MONTHS } from "../models/calendar";
+
+load();
 
 var months = MONTHS;
 var date = new Date();
@@ -93,9 +95,13 @@ export default {
           "' align='center'><div style='float:left;'>" +
           dayCount +
           "</div>";
-        var dd = monthInNumber + "-" + dayCount + "-" + y;
-        //        console.log(dd);
-        // cnt = 0;
+          var dd = "";
+        if (dayCount < 10) {
+           dd = monthInNumber + "-0" + dayCount + "-" + y;
+        }else{
+          dd = monthInNumber + "-" + dayCount + "-" + y;
+        }
+
         for (let i = 0; i < tasks.value.length; i++) {
           if (tasks.value[i].date == dd) {
             cnt++;
@@ -125,8 +131,6 @@ export default {
 
       if (!html.endsWith("</tr>")) html += " </tr>";
 
-      // var divNew = document.getElementById("actualDay");
-      // divNew.innerHTML += html;
       this.actualDayHtml = html;
     },
   },

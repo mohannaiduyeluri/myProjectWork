@@ -1,11 +1,23 @@
 import { ref } from 'vue';
+import { fetchTasks, addTask } from '../request';
 
 export interface ITask {
 	by: string;
 	date: string;
 	done: boolean;
 	title: string;
-	for: string;
+	to: string;
+}
+
+export async function load(){
+	const e = await fetchTasks();
+	tasks.value = e.data;
+}
+
+export async function addNewTask(task: ITask){
+	const e = await addTask(task);
+	// console.log("prnintg at add new task response client", e);
+	// tasks.value = e.data;
 }
 
 export const tasks = ref<ITask[]>([
@@ -14,27 +26,27 @@ export const tasks = ref<ITask[]>([
 		date: '04-22-2022',
 		done: false,
 		title: 'Update NodeJS',
-		for: 'user_2'
+		to: 'user_2'
 	},
 	{
 		by: 'user_2',
 		date: '04-28-2022',
 		done: false,
 		title: 'Update Vue',
-		for: 'Mohan'
+		to: 'Mohan'
 	},
 	{
 		by: 'user_2',
 		date: '04-24-2022',
 		done: true,
 		title: 'Integrate jQuery',
-		for: 'Mohan'
+		to: 'Mohan'
 	},
 	{
 		by: 'user_2',
 		date: '04-24-2022',
 		done: true,
 		title: 'Make a demo',
-		for: 'Mohan'
+		to: 'Mohan'
 	}
 ]);

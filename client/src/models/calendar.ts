@@ -1,7 +1,7 @@
 export const DAYS = [
     "Sun",
     "Mon",
-    "Tues",
+    "Tue",
     "Wed",
     "Thur",
     "Fri",

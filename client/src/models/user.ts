@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { fetchUsers } from '../userReq';
 
 export interface IUser {
 	username: string;
@@ -18,3 +19,8 @@ export const users = ref<IUser[]>([
 		avatar: "https://randomuser.me/api/portraits/men/2.jpg"
 	},
 ]);
+
+export async function loadUsers(){
+	const e = await fetchUsers();
+	users.value = e.data;
+}

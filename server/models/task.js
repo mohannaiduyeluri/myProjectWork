@@ -10,6 +10,7 @@ const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 
  const list = [
 	{
+		_id:'1',
 		by: 'Mohan',
 		date: '04-22-2022',
 		done: false,
@@ -17,6 +18,7 @@ const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 		for: 'Sandeep'
 	},
 	{
+		_id:'2',
 		by: 'Sandeep',
 		date: '04-28-2022',
 		done: false,
@@ -24,6 +26,7 @@ const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 		to: 'Mohan'
 	},
 	{
+		_id:'3',
 		by: 'Yeluri',
 		date: '04-24-2022',
 		done: true,
@@ -31,6 +34,7 @@ const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 		to: 'Mohan'
 	},
 	{
+		_id:'4',
 		by: 'Sunny',
 		date: '04-24-2022',
 		done: true,
@@ -48,6 +52,16 @@ async function addTask(task){
     await collection.insertOne(task);
     const result = await collection.find();
 	console.log("printing at mongo db response ", result);
+    return result;
+}
+
+async function updateTask(id, taskOld){
+	await collection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: {done:taskOld.done} },
+        { returnDocument: 'after' }
+    );
+    const result = await collection.find();
     return result;
 }
 
@@ -72,6 +86,7 @@ module.exports = {
     seed,
     fromToken,
 	addTask,
+	updateTask,
     async getList(){
         return (await collection.find().toArray() );
     }

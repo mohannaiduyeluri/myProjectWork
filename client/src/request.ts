@@ -73,6 +73,24 @@ export const addTask = async (task:ITask) => {
 	return resBody;
 }
 
+export const updateTask = async (task:ITask) => {
+	// const method = 'POST';
+	// const headers = { 'Content-Type': 'application/json' };
+	// const body = JSON.stringify({ task });
+	let options: RequestInit = {   };
+	 options = {
+		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(task) // body data type must match "Content-Type" header
+	};
+	const res = await fetch(url_login+"tasks/update/"+task._id, options);
+
+	const resBody: Envelope<ITask[]> = await res.json();
+	return resBody;
+}
 
 interface Envelope<T> {
 	data: T;

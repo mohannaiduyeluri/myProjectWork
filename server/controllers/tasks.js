@@ -20,13 +20,13 @@ app
             res.send({ success: true, errors: [], data: tasks});
         }).catch(next);
     })
-    .post('/seed', (req, res, next) => {
-        taskModel.seed()
-        .then(x => {
-            res.send({ success: true, errors: [], data: x.insertedIds });
+    .post('/update/:id', (req, res, next) => {
+        // console.log(req.body);
+        taskModel.updateTask(req.params.id, req.body )
+        .then(tasks => {
+            res.send({ success: true, errors: [], data: tasks });
         }).catch(next);
     })
-
 
 
 module.exports = app;

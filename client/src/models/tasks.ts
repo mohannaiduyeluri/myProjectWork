@@ -1,7 +1,8 @@
 import { ref } from 'vue';
-import { fetchTasks, addTask } from '../request';
+import { fetchTasks, addTask, updateTask } from '../request';
 
 export interface ITask {
+	_id: string;
 	by: string;
 	date: string;
 	done: boolean;
@@ -16,12 +17,15 @@ export async function load(){
 
 export async function addNewTask(task: ITask){
 	const e = await addTask(task);
-	// console.log("prnintg at add new task response client", e);
-	// tasks.value = e.data;
+}
+
+export async function udpateExistingTask(task: ITask){
+	const e = await updateTask(task);
 }
 
 export const tasks = ref<ITask[]>([
 	{
+		_id: "1",
 		by: 'Mohan',
 		date: '04-22-2022',
 		done: false,
@@ -29,6 +33,7 @@ export const tasks = ref<ITask[]>([
 		to: 'user_2'
 	},
 	{
+		_id: "2",
 		by: 'user_2',
 		date: '04-28-2022',
 		done: false,
@@ -36,6 +41,7 @@ export const tasks = ref<ITask[]>([
 		to: 'Mohan'
 	},
 	{
+		_id: "3",
 		by: 'user_2',
 		date: '04-24-2022',
 		done: true,
@@ -43,6 +49,7 @@ export const tasks = ref<ITask[]>([
 		to: 'Mohan'
 	},
 	{
+		_id: "4",
 		by: 'user_2',
 		date: '04-24-2022',
 		done: true,

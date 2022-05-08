@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { session } from '../models/session';
-import { ITask, tasks, load, addNewTask } from '../models/tasks';
+import { ITask, tasks, load, addNewTask, udpateExistingTask } from '../models/tasks';
 import { users, loadUsers } from '../models/user';
 import NavBar from '../components/nav.vue';
 import Calendar from '../components/calendar.vue';
@@ -28,6 +28,8 @@ const filterTasks = (e: ITask[]): ITask[] => {
 
 	else if(curTab.value == "Created")
 		filteredTasks.value = e?.filter(t => t.by === session.username);
+	else if(curTab.value == "All")
+		filteredTasks.value = e;
 
 }
 
@@ -48,6 +50,7 @@ const pushTask = () => {
 	 var dateArr = date.value.split('-');
 	date.value = dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0];
 	addNewTask({
+		_id: '',
 		by: session.username,
 		date: date.value,
 		done: false,
@@ -66,6 +69,24 @@ const pushTask = () => {
 	modalSwitch.value = false;
 }
 
+
+const taskStatusUpdate = (task: ITask) => {
+	if(!session.username) return;
+	//  var dateArr = date.value.split('-');
+	 task.done = !task.done;
+	// date.value = dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0];
+	udpateExistingTask(task);
+	// load();
+	// console.log("printing tasks after load calling ", tasks);
+	// tasks.value?.push({
+	// 	by: session.username,
+	// 	date: date.value,
+	// 	done: false,
+	// 	to: tfor.value,
+	// 	title: title.value
+	// });
+	// modalSwitch.value = false;
+}
 const clsDone = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
 const setCurTab = (tab: string) => curTab.value = tab;
@@ -91,8 +112,7 @@ const gotoContact = () => {
 		<span>Add</span>
 	</button>
 	<div class="card tabs">
-		<br><br><br><br>
-		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned');filterTasks(tasks)">Assigned</div>
+		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned');filterTasks(tasks)" style="margin-top: 80%;">Assigned</div>
 		<div :class="clsTabs('Created')" @click="setCurTab('Created');filterTasks(tasks)">Created</div>
 		<div :class="clsTabs('All')" @click="setCurTab('All');filterTasks(tasks)">All</div>
 		<div :class="clsTabs('Calendar')" @click="setCurTab('Calendar')">Calender</div>
@@ -146,7 +166,8 @@ const gotoContact = () => {
 						<div class="c">by</div>
 						<span>{{task.by}}</span>
 					</div>
-					<button :class="clsDone(task)" @click="()=>task.done = !task.done">
+					<button :class="clsDone(task)"  @click="taskStatusUpdate(task)">
+					<!-- @click="()=>task.done = !task.done" -->
 						{{ task.done ? '✘' : '✔' }}
 					</button>
 				</div>

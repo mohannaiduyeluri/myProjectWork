@@ -1,11 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import router from '../router';
+import { addContactUs } from '../models/contactUs';
 
 const label = ref("Submit");
 
+const name = ref<string>('');
+const email = ref<string>('');
+const message = ref<string>('');
+
 const submit = () => {
 	label.value = "Message Sent!";
+	console.log("submit got called ",name.value, email.value, message.value);
+	addContactUs({
+		name: name.value,
+		email: email.value,
+		message: message.value
+	});
 	setTimeout(() => {
 		router.push('./tasks');
 	}, 500);
@@ -16,9 +27,9 @@ const submit = () => {
 <template>
 	<div class="frm">
 		<h1 class="title">Contact Us</h1>
-		<input class="input" type="text" placeholder="Name">
-		<input class="input" type="email" placeholder="Email">
-		<textarea class="textarea" type="text" placeholder="Message"></textarea>
+		<input class="input" type="text" placeholder="Name" v-model="name" >
+		<input class="input" type="email" placeholder="Email" v-model="email">
+		<textarea class="textarea" type="text" placeholder="Message" v-model="message"></textarea>
 		<button class="button is-success" @click="submit">{{ label }}</button>
 	</div>
 </template>

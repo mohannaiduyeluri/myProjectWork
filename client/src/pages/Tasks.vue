@@ -9,26 +9,22 @@ import router from '../router';
 
 load();
 loadUsers();
-// console.log("printing tasks new ", tasks);
 
 const curTab = ref("All");
 
 const clsTabs = (tab: string) => tab === curTab.value ? 'tab active' : 'tab';
 
-if(!session.isLoggedIn) router.push('/');
+if (!session.isLoggedIn) router.push('/');
 
 const filterTasks = (e: ITask[]): ITask[] => {
-	// load();
-	// console.log("printing tasks ", tasks);
-	// console.log("printing sent tasks in method ", e);
-	e = Array.isArray(e)? e.sort((a, b) => a.done ? 1: -1): [];
+	e = Array.isArray(e) ? e.sort((a, b) => a.done ? 1 : -1) : [];
 
-	if(curTab.value == "Assigned")
+	if (curTab.value == "Assigned")
 		filteredTasks.value = e?.filter(t => t.to === session.username);
 
-	else if(curTab.value == "Created")
+	else if (curTab.value == "Created")
 		filteredTasks.value = e?.filter(t => t.by === session.username);
-	else if(curTab.value == "All")
+	else if (curTab.value == "All")
 		filteredTasks.value = e;
 
 }
@@ -42,12 +38,10 @@ const tfor = ref<string>('');
 const date = ref<string>('');
 const filteredTasks = ref<ITask[]>([]);
 filteredTasks.value = tasks.value;
-// curTab.value = "Assigned"
-// filteredTasks.value = filterTasks(tasks.value);
 
 const pushTask = () => {
-	if(!session.username) return;
-	 var dateArr = date.value.split('-');
+	if (!session.username) return;
+	var dateArr = date.value.split('-');
 	date.value = dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0];
 	addNewTask({
 		_id: '',
@@ -58,34 +52,14 @@ const pushTask = () => {
 		title: title.value
 	});
 	load();
-	// console.log("printing tasks after load calling ", tasks);
-	// tasks.value?.push({
-	// 	by: session.username,
-	// 	date: date.value,
-	// 	done: false,
-	// 	to: tfor.value,
-	// 	title: title.value
-	// });
 	modalSwitch.value = false;
 }
 
 
 const taskStatusUpdate = (task: ITask) => {
-	if(!session.username) return;
-	//  var dateArr = date.value.split('-');
-	 task.done = !task.done;
-	// date.value = dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0];
+	if (!session.username) return;
+	task.done = !task.done;
 	udpateExistingTask(task);
-	// load();
-	// console.log("printing tasks after load calling ", tasks);
-	// tasks.value?.push({
-	// 	by: session.username,
-	// 	date: date.value,
-	// 	done: false,
-	// 	to: tfor.value,
-	// 	title: title.value
-	// });
-	// modalSwitch.value = false;
 }
 const clsDone = (task: ITask) => task.done ? 'button is-succes is-small' : 'button is-danger is-small'
 
@@ -96,9 +70,7 @@ const taskSwitch = () => {
 }
 
 const gotoContact = () => {
-	// console.log("goto contact");
 	router.push('/contact');
-	// router.push('/cale6ndar');
 }
 
 
@@ -112,17 +84,18 @@ const gotoContact = () => {
 		<span>Add</span>
 	</button>
 	<div class="card tabs">
-		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned');filterTasks(tasks)" style="margin-top: 80%;">Assigned</div>
-		<div :class="clsTabs('Created')" @click="setCurTab('Created');filterTasks(tasks)">Created</div>
-		<div :class="clsTabs('All')" @click="setCurTab('All');filterTasks(tasks)">All</div>
+		<div :class="clsTabs('Assigned')" @click="setCurTab('Assigned'); filterTasks(tasks)" style="margin-top: 80%;">
+			Assigned</div>
+		<div :class="clsTabs('Created')" @click="setCurTab('Created'); filterTasks(tasks)">Created</div>
+		<div :class="clsTabs('All')" @click="setCurTab('All'); filterTasks(tasks)">All</div>
 		<div :class="clsTabs('Calendar')" @click="setCurTab('Calendar')">Calender</div>
 		<div class="tab" @click="gotoContact">Contact Us</div>
 	</div>
 
 	<div :class="modalCls(modalSwitch)">
-  	<div class="modal-background" @click="()=>modalSwitch=false"></div>
-  	<div class="modal-content">
-  	  <div class="card">
+		<div class="modal-background" @click="() => modalSwitch = false"></div>
+		<div class="modal-content">
+			<div class="card">
 				<h1>Add Task</h1>
 				<input class="input is-normal" type="text" placeholder="Title" v-model="title" />
 
@@ -136,7 +109,8 @@ const gotoContact = () => {
 					</div>
 					<div class="dropdown-menu" id="dropdown-menu" role="menu">
 						<div class="dropdown-content">
-								<a href="#" class="dropdown-item" v-for="user in users" @click="()=>tfor=user.username">{{user.username}}</a>
+							<a href="#" class="dropdown-item" v-for="user in users"
+								@click="() => tfor = user.username">{{ user.username }}</a>
 						</div>
 					</div>
 				</div>
@@ -144,36 +118,35 @@ const gotoContact = () => {
 				<input class="input is-normal" type="date" placeholder="Date" v-model="date" />
 				<button class="button is-normal" @click="pushTask">Add</button>
 			</div>
-  	</div>
-  	<button class="modal-close is-large" aria-label="close" @click="()=>modalSwitch=false"></button>
+		</div>
+		<button class="modal-close is-large" aria-label="close" @click="() => modalSwitch = false"></button>
 	</div>
 
 	<!-- <NavBar /> -->
 
 	<div v-if="taskSwitch()" class="tasks">
 		<div class="tskLst">
-				<div class="card task" v-for="task in filteredTasks" :key="task.title">
-					<div class="title">{{task.title}}</div>
-					<div class="data">
-						<div class="c">for</div>
-						<span>{{task.to}}</span>
-					</div>
-					<div class="data">
-						<div class="c">due</div>
-						<span>{{task.date}}</span>
-					</div>
-					<div class="data">
-						<div class="c">by</div>
-						<span>{{task.by}}</span>
-					</div>
-					<button :class="clsDone(task)"  @click="taskStatusUpdate(task)">
-					<!-- @click="()=>task.done = !task.done" -->
-						{{ task.done ? '✘' : '✔' }}
-					</button>
+			<div class="card task" v-for="task in filteredTasks" :key="task.title">
+				<div class="title">{{ task.title }}</div>
+				<div class="data">
+					<div class="c">for</div>
+					<span>{{ task.to }}</span>
 				</div>
+				<div class="data">
+					<div class="c">due</div>
+					<span>{{ task.date }}</span>
+				</div>
+				<div class="data">
+					<div class="c">by</div>
+					<span>{{ task.by }}</span>
+				</div>
+				<button :class="clsDone(task)" @click="taskStatusUpdate(task)">
+					{{ task.done ? '✘' : '✔' }}
+				</button>
 			</div>
+		</div>
 	</div>
-	
+
 	<Calendar class="calendar" v-if="!taskSwitch()" />
 
 </template>
@@ -185,9 +158,11 @@ const gotoContact = () => {
 	left: 50%;
 	transform: translateX(-50%);
 }
+
 .modal-content {
 	width: 500px;
 	height: 600px;
+
 	.card {
 		display: flex;
 		height: 100%;
@@ -227,6 +202,7 @@ const gotoContact = () => {
 		}
 	}
 }
+
 .tasks {
 	position: absolute;
 	display: flex;
@@ -270,9 +246,9 @@ const gotoContact = () => {
 				text-align: center;
 				display: inline;
 
-					.c {
-						display: inline-block;
-					}
+				.c {
+					display: inline-block;
+				}
 
 				span {
 					color: white;

@@ -6,6 +6,7 @@ const { join } = require('path');
 const userModel = require('./models/user');
 const usersController = require('./controllers/users');
 const tasksController = require('./controllers/tasks');
+const contactController = require('./controllers/contactUs');
 
 const { requireAuth } = require('./models/auth');
 
@@ -43,6 +44,7 @@ app
 	})
 	.use('/api/users', usersController)
 	.use('/api/tasks', tasksController)
+	.use('/api/contact', contactController)
 	.use((err, req, res, next) => {
 			console.error(err);
 			res .status(err.statusCode || 500)

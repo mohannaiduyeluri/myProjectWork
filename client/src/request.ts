@@ -1,3 +1,4 @@
+import { IContactUs } from './models/contactUs';
 import { session } from './models/session';
 import { ITask } from './models/tasks';
 import { IUser } from './models/user';
@@ -90,6 +91,23 @@ export const updateTask = async (task:ITask) => {
 
 	const resBody: Envelope<ITask[]> = await res.json();
 	return resBody;
+}
+
+export const addContactus = async (contactUs:IContactUs) => {
+	// const method = 'POST';
+	// const headers = { 'Content-Type': 'application/json' };
+	// const body = JSON.stringify({ task });
+	// console.log("submit got called  3, fetch", contactUs);
+	let options: RequestInit = {   };
+	 options = {
+		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(contactUs) // body data type must match "Content-Type" header
+	};
+	await fetch(url_login+"contact/add/", options);
 }
 
 interface Envelope<T> {

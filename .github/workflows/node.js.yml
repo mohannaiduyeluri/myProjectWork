@@ -39,6 +39,7 @@ jobs:
       run: |
           ls -a
           mkdir -p server/public/
+          mkdir -p client/dist/
           cp -a client/dist/. server/public/
           rm -r client .gitignore
           

@@ -110,6 +110,22 @@ export const addContactus = async (contactUs:IContactUs) => {
 	await fetch(url_login+"contact/add/", options);
 }
 
+export const autoSeachSubmit = async (name: string) => {
+	
+	 let options: RequestInit = {   };
+	 options = {
+		method: 'GET', // *GET, POST, PUT, DELETE, etc.
+		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(name) // body data type must match "Content-Type" header
+	};
+	const res = await fetch(url_login+"search/", options);
+	const resBody: Envelope<ITask[]> = await res.json();
+	return resBody;
+}
+
 interface Envelope<T> {
 	data: T;
 	success: boolean;

@@ -6,6 +6,7 @@ import Tasks from '../pages/Tasks.vue';
 import CreatedTasks from '../pages/CreatedTasks.vue';
 import AllTasks from '../pages/AllTasks.vue';
 import Calendar from '../pages/Calendar.vue';
+import AutoSearch from '../pages/AutoSearch.vue';
 
 const routes: RouteRecordRaw[] = [
 	{ path: '/', component: Login },
@@ -14,6 +15,7 @@ const routes: RouteRecordRaw[] = [
 	{ path: '/AllTasks', component: AllTasks },
 	{ path: '/CreatedTasks', component: CreatedTasks },
 	{ path: '/Calendar', component: Calendar },
+	{ path: '/autoSearch', component: AutoSearch },
 ];
 
 const router = createRouter({

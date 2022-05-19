@@ -73,6 +73,9 @@ const gotoContact = () => {
 	router.push('/contact');
 }
 
+const autoSearch = () => {
+	router.push('/autoSearch');
+}
 
 </script>
 
@@ -90,6 +93,7 @@ const gotoContact = () => {
 		<div :class="clsTabs('All')" @click="setCurTab('All'); filterTasks(tasks)">All</div>
 		<div :class="clsTabs('Calendar')" @click="setCurTab('Calendar')">Calender</div>
 		<div class="tab" @click="gotoContact">Contact Us</div>
+		<div class="tab" @click="autoSearch">Auto Search</div>
 	</div>
 
 	<div :class="modalCls(modalSwitch)">

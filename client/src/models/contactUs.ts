@@ -7,7 +7,6 @@ export interface IContactUs {
 	message: string;
 }
 
-
 export async function addContactUs(contact: IContactUs){
     console.log("submit got called  2");
 	const e = await addContactus(contact);
